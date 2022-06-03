@@ -54,6 +54,10 @@ dev_dependencies:
 flutter:
   assets:
     - photo/pexels-pixabay-255501.jpg
+    - photo/1.jpg
+    - photo/2.jpg
+    - photo/3.jpg
+    - photo/4.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
