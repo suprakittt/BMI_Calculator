@@ -119,6 +119,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void calculate() {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Your weight is greater than what is considered healthy."),
+      content: Text("Please Click the green button below to see healthy food recipes."),
+      actions: [
+        okButton,
+      ],
+    );
     double height = double.parse(_heightController.text) / 100;
     double weight = double.parse(_weightController.text);
 
@@ -132,43 +145,80 @@ class _MyHomePageState extends State<MyHomePage> {
         _message = 'You body is fine';
       } else if (_bmi! < 30) {
         _message = 'You are overweight';
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
       } else {
         _message = 'You are obese';
+        showDialog(context: context, builder: (BuildContext context) {
+          return alert;
+        },
+        );
       }
     });
   }
 }
 
+class PhotoItem {
+  final String image;
+  final String name;
+  PhotoItem(this.image, this.name);
+}
+
 class SecondRoute extends StatelessWidget {
 
-  List<String> images = [
-    "photo/1.jpg",
-    "photo/2.jpg",
-    "photo/3.jpg",
-    "photo/4.jpg"
+  final List<PhotoItem> images = [
+    PhotoItem("photo/1.jpg", "Chicken Satay salad"),
+    PhotoItem("photo/2.jpg", "Linguine with avocado"),
+    PhotoItem("photo/3.jpg", "Pork souvlaki"),
+    PhotoItem("photo/4.jpg", "Salsa verde"),
+    PhotoItem("photo/5.jpg", "Roasted cod"),
+    PhotoItem("photo/6.jpg", "Pomegranate"),
+    PhotoItem("photo/7.jpg", "Tuna Spaghetti"),
+    PhotoItem("photo/8.jpg", "Turmeric, fish curry"),
+    PhotoItem("photo/9.jpg", "Crispy grilled feta"),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
+    return Scaffold(
+      appBar: AppBar(
           title: Text("Healthy Food Recommend"),
           backgroundColor: Colors.blue,
         ),
-        body: Container(
-            padding: EdgeInsets.all(12.0),
-            child: GridView.builder(
-              itemCount: images.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0
-              ),
-              itemBuilder: (BuildContext context, int index){
-                return Image.asset(images[index]);
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
+            crossAxisCount: 3,
+          ),
+          itemCount: images.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RouteTwo(
+                        image: images[index].image, name: images[index].name),
+                  ),
+                );
               },
-            )),
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(images[index].image),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pop(context);
@@ -176,6 +226,44 @@ class SecondRoute extends StatelessWidget {
           child: Icon(Icons.home_filled),
           backgroundColor: Colors.green,
         ),
+      );
+  }
+}
+
+class RouteTwo extends StatelessWidget {
+  final String image;
+  final String name;
+
+  RouteTwo({Key? key, required this.image, required this.name})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recieves'),
+      ),
+      body: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              width: double.infinity,
+              child: Image(
+                image: AssetImage(image),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Text(
+                name,
+                style: TextStyle(fontSize: 40),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
