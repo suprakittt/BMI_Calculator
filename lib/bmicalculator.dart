@@ -21,7 +21,7 @@ class BMIpage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('BMI Calculator'),
         centerTitle: true,
@@ -30,8 +30,8 @@ class BMIpage extends State<MainPage> {
       body: Center(
         child: Container(
           child: Card(
-            color: Colors.white38,
-            elevation: 50,
+            color: Colors.white30,
+            elevation: 1,
             child: Padding(
               padding: const EdgeInsets.all(50),
               child: Column(
@@ -51,7 +51,7 @@ class BMIpage extends State<MainPage> {
                   ),
                   RaisedButton(
                     shape: StadiumBorder(),
-                    color: Colors.greenAccent,
+                    color: Colors.blueAccent,
                     onPressed: calculate,
                     child: Text('Calculate'),
                   ),
@@ -71,7 +71,7 @@ class BMIpage extends State<MainPage> {
                   Container(
                     child: Text(
                       _message,
-                      style: TextStyle(fontSize: 20, color: Colors.black.withOpacity(1)),
+                      style: TextStyle(fontSize: 20, color: Colors.blue.withOpacity(1)),
                       textAlign: TextAlign.center,
                     ),
                   )
