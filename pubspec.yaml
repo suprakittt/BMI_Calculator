@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   circular_countdown_timer: ^0.2.1
+  get_storage:
   flutter:
     sdk: flutter
 

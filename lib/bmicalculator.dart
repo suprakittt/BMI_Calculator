@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'historypage.dart';
 
-class MainPage extends StatefulWidget{
-  BMIpage createState()=> BMIpage();
+class MainPage extends StatefulWidget {
+  BMIpage createState() => BMIpage();
 }
 
 class BMIpage extends State<MainPage> {
-
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
+  List _History = [];
   double? _bmi;
   String _message = '';
+  @override
+  void initState() {
+    _History = GetStorage().read("History") ?? [];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Text('BMI Calculator'),
         centerTitle: true,
@@ -23,29 +29,21 @@ class BMIpage extends State<MainPage> {
       ),
       body: Center(
         child: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("photo/pexels-pixabay-255501.jpg"),
-                  fit: BoxFit.cover)
-          ),
-          width: 350,
           child: Card(
-            color: Colors.white70,
-            elevation: 10,
+            color: Colors.white38,
+            elevation: 50,
             child: Padding(
-              padding: const EdgeInsets.all(100),
+              padding: const EdgeInsets.all(50),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-
                   TextField(
-                    keyboardType:
-                    TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(labelText: 'Height (cm)'),
                     controller: _heightController,
                   ),
                   TextField(
-                    keyboardType:
-                    TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
                       labelText: 'Weight (kg)',
                     ),
@@ -73,7 +71,7 @@ class BMIpage extends State<MainPage> {
                   Container(
                     child: Text(
                       _message,
-                      style: TextStyle(fontSize: 20, color: Colors.grey.withOpacity(1)),
+                      style: TextStyle(fontSize: 20, color: Colors.black.withOpacity(1)),
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -116,6 +114,10 @@ class BMIpage extends State<MainPage> {
     double heightSquare = height * height;
     double result = weight / heightSquare;
     _bmi = result;
+    _heightController.clear();
+    _weightController.clear();
+    _History.add({"weight": "$weight", "height": "${height * 100}", "result": "${result.floor()}"});
+    GetStorage().write("History", _History);
     setState(() {
       if (_bmi! < 18.5) {
         _message = "You are underweight";
@@ -131,9 +133,11 @@ class BMIpage extends State<MainPage> {
         );
       } else {
         _message = 'You are obese';
-        showDialog(context: context, builder: (BuildContext context) {
-          return alert;
-        },
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
         );
       }
     });
