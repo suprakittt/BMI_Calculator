@@ -30,7 +30,7 @@ class BMIpage extends State<MainPage> {
       body: Center(
         child: Container(
           child: Card(
-            color: Colors.white30,
+            color: Colors.white60,
             elevation: 1,
             child: Padding(
               padding: const EdgeInsets.all(50),
@@ -51,7 +51,7 @@ class BMIpage extends State<MainPage> {
                   ),
                   RaisedButton(
                     shape: StadiumBorder(),
-                    color: Colors.blueAccent,
+                    color: Colors.green,
                     onPressed: calculate,
                     child: Text('Calculate'),
                   ),
